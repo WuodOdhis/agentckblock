@@ -2,7 +2,7 @@
 
 **A production-ready Web2-to-Web3 bridge for DAO communities.**
 
-Unlock the power of Nervos CKB without your users ever touching a crypto wallet. Verify identity on Telegram, claim CKB on-chain — all secured by a custom RISC-V lock script running in CKB-VM.
+Unlock the power of Nervos CKB without your users ever touching a crypto wallet. Verify identity on Telegram, claim CKB on-chain - all secured by a custom RISC-V lock script running in CKB-VM.
 
 ---
 
@@ -10,14 +10,14 @@ Unlock the power of Nervos CKB without your users ever touching a crypto wallet.
 
 DAOs want to reward their communities, but there's a massive UX gap:
 
-1. **Seed phrases are hard** — Most Telegram community members have never used a crypto wallet
-2. **Manual airdrops are tedious** — Sending tokens one-by-one doesn't scale
-3. **Centralized custody is risky** — Trusting a single admin to hold and distribute funds introduces counterparty risk
-4. **Gas fees kill micro-rewards** — Sending 100 people 5 CKB each costs more in fees than the reward itself
+1. **Seed phrases are hard** - Most Telegram community members have never used a crypto wallet
+2. **Manual airdrops are tedious** - Sending tokens one-by-one doesn't scale
+3. **Centralized custody is risky** - Trusting a single admin to hold and distribute funds introduces counterparty risk
+4. **Gas fees kill micro-rewards** - Sending 100 people 5 CKB each costs more in fees than the reward itself
 
 ## The Solution
 
-CKB Agent Lock lets DAOs **lock a reward pool on-chain** where each recipient's CKB is secured by a custom ECDSA lock script. Recipients prove their Telegram identity through a bot, and the Agent (a trusted server) signs the spend transaction — all without the end user needing to understand private keys, gas, or transaction construction.
+CKB Agent Lock lets DAOs **lock a reward pool on-chain** where each recipient's CKB is secured by a custom ECDSA lock script. Recipients prove their Telegram identity through a bot, and the Agent (a trusted server) signs the spend transaction - all without the end user needing to understand private keys, gas, or transaction construction.
 
 ### How It Works
 
@@ -34,10 +34,10 @@ CKB Agent Lock lets DAOs **lock a reward pool on-chain** where each recipient's 
                     └──────────────┘     └──────────────┘
 ```
 
-1. **Admin** — Locks a CKB reward pool via the Admin Dashboard, specifying which Telegram usernames are eligible (pro-rata split)
-2. **Users** — Visit the Claim Portal, enter their Telegram username and CKB address
-3. **Verification** — The portal generates a challenge code; the user sends it to the Telegram bot to prove identity
-4. **Claim** — The Agent server builds, signs, and broadcasts the CKB spend transaction using ECDSA signature recovery — executed directly on the CKB-VM
+1. **Admin** - Locks a CKB reward pool via the Admin Dashboard, specifying which Telegram usernames are eligible (pro-rata split)
+2. **Users** - Visit the Claim Portal, enter their Telegram username and CKB address
+3. **Verification** - The portal generates a challenge code; the user sends it to the Telegram bot to prove identity
+4. **Claim** - The Agent server builds, signs, and broadcasts the CKB spend transaction using ECDSA signature recovery - executed directly on the CKB-VM
 
 ## Why CKB?
 
@@ -55,12 +55,12 @@ CKB Agent Lock lets DAOs **lock a reward pool on-chain** where each recipient's 
 
 A `#![no_std]` Rust binary compiled to RISC-V that runs in CKB-VM v2 (`data2`). The script:
 
-1. Reads the lock script `args` — the trusted Agent's Blake160 public key hash
-2. Reads the witness `lock` field — a 65-byte ECDSA signature (64 bytes + 1 recovery ID)
+1. Reads the lock script `args` - the trusted Agent's Blake160 public key hash
+2. Reads the witness `lock` field - a 65-byte ECDSA signature (64 bytes + 1 recovery ID)
 3. Loads the transaction hash via `load_tx_hash()`
 4. Recovers the signer's public key using `k256::ecdsa::VerifyingKey::recover_from_prehash`
 5. Hashes the recovered key with Blake2b (CKB default) and trims to 20 bytes (Blake160)
-6. Compares against the expected hash in `args` — match = authorized
+6. Compares against the expected hash in `args` - match = authorized
 
 **Key technical achievement:** Successfully stripped RISC-V atomic instructions (`lr.d.aq`, `sc.d`) by compiling with `-C target-feature=-a`, enabling `ckb-std` and `k256` to run without hardware atomic support.
 
@@ -130,11 +130,11 @@ npm run deploy    # Deploy binary to CKB devnet
 
 ## The Technology
 
-- **CKB-VM** — RISC-V based virtual machine running custom lock scripts
-- **CCC SDK** — Canonical CKB Client for TypeScript transaction construction
-- **k256** — Pure-Rust secp256k1 ECDSA signature recovery (no_std)
-- **Blake2b** — CKB's native hashing (blake160 = first 20 bytes of Blake2b-256)
-- **OffCKB** — Local PoW devnet for development and testing
+- **CKB-VM** - RISC-V based virtual machine running custom lock scripts
+- **CCC SDK** - Canonical CKB Client for TypeScript transaction construction
+- **k256** - Pure-Rust secp256k1 ECDSA signature recovery (no_std)
+- **Blake2b** - CKB's native hashing (blake160 = first 20 bytes of Blake2b-256)
+- **OffCKB** - Local PoW devnet for development and testing
 
 ## Roadmap
 
@@ -148,6 +148,6 @@ npm run deploy    # Deploy binary to CKB devnet
 
 ## Why DAOs Need This
 
-> *"The next million CKB users won't come from seed phrases — they'll come from Telegram."*
+> *"The next million CKB users won't come from seed phrases - they'll come from Telegram."*
 
 CKB Agent Lock turns any Telegram community into a CKB-ready audience. No browser extensions, no seed phrase backups, no gas fees to figure out. Just a username, a bot, and a claim button.
